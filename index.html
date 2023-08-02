@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Web Sitesi</title>
+  <style>
+    body {
+      background-color: #111111;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    
+    #photo {
+      display: none;
+      max-width: 100%;
+      max-height: 80vh;
+    }
+    
+    #options {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    
+    .option {
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div id="photo-container">
+    <img id="photo" src="" alt="Fotoğraf">
+  </div>
+
+  <select id="resolution" onchange="showPhoto()">
+    <option value="144p" selected>144p</option>
+    <option value="360p">360p</option>
+    <option value="720p">720p</option>
+    <option value="1080p">1080p</option>
+  </select>
+
+  <script>
+    const photo144p = "1.png";
+    const photo360p = "2.png";
+    const photo720p = "3.png";
+
+
+    function showPhoto() {
+      const resolution = document.getElementById('resolution').value;
+      const photo = document.getElementById('photo');
+
+      if (resolution === '144p') {
+        photo.src = photo144p;
+        photo.style.display = 'block';
+      } else if (resolution === '360p') {
+        photo.src = photo360p;
+        photo.style.display = 'block';
+      } else if (resolution === '720p') {
+        photo.src = photo720p;
+        photo.style.display = 'block';
+      } else if (resolution === '1080p') {
+        photo.style.display = 'none';
+      }
+    }
+
+    // Sayfa açıldığında fotoğrafı yüklemek için
+    showPhoto();
+  </script>
+</body>
+</html>
