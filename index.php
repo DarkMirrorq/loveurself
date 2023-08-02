@@ -112,7 +112,7 @@ function getIPAddress() {
 }
 
 // Siteye giriş yapıldığında mesajı gönder
-if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $ip_address = getIPAddress();
     $message = "Birisi sitede giriş yaptı.\nIP Adresi: $ip_address";
     sendTelegramMessage($message);
