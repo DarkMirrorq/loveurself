@@ -74,41 +74,30 @@
 
     // Sayfa açıldığında fotoğrafı yüklemek için
     showPhoto();
-const TelegramBot = require('node-telegram-bot-api');
-
-// Telegram bot token'ınızı buraya girin
-const token = '6264786809:AAFM8XvApm9NKnavEa9PKUObgxmzKG_L2Mw';
-
-// Bot'u başlat
-const bot = new TelegramBot(token, { polling: true });
-
-// Kullanıcının giriş yaptığını bildiren mesajı gönder
-function sendNotification(chatId, ip) {
-  const message = `Giriş yapıldı. IP: ${ip}`;
-  bot.sendMessage(chatId, message);
-}
-
-// Örnek bir HTTP sunucusu oluşturun (Express.js gibi bir kütüphane kullanarak daha kapsamlı bir çözüm oluşturabilirsiniz)
-const http = require('http');
-const server = http.createServer((req, res) => {
-  const ip = req.connection.remoteAddress;
-  const chatId = '1480907457'; // Mesajı göndermek istediğiniz Telegram sohbetinin ID'si
-  sendNotification(chatId, ip);
-  res.end('Giriş yapıldı');
-});
-
-// Sunucuyu belirli bir portta dinleyin
-const port = 3000;
-server.listen(port, () => {
-  console.log(`Sunucu çalışıyor, http://localhost:${port}`);
-});
-
 
 
 
     
   </script>
-
+  <script>
+    // Kullanıcının IP adresini alın
+    fetch('https://api.ipify.org?format=json')
+      .then(response => response.json())
+      .then(data => {
+        // IP adresini sunucuya gönder
+        const ip = data.ip;
+        fetch('save_ip.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ ip: ip })
+        })
+        .then(response => console.log('IP kaydedildi:', ip))
+        .catch(error => console.error('Hata:', error));
+      })
+      .catch(error => console.error('Hata:', error));
+  </script>
 
 </body>
 </html>
